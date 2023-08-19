@@ -5,6 +5,6 @@ into a output.txt in the ~\User\Download\Output directory \
 (which it creates if not already present).
 
 # The Format
-"Root: (Directory if scanned folder)"\
+"Root: (Directory of scanned folder)"\
 "FOLDER: folder1"\
 "- FILE: test.txt"
