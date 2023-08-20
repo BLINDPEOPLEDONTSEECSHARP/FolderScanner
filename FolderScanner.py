@@ -1,4 +1,10 @@
 import os
+from tkinter import filedialog as fd
+import tkinter as tk
+import sys
+import ctypes
+
+
 
 def get_available_filename(output_directory, base_filename):
     count = 1
@@ -33,15 +39,25 @@ def list_files_and_folders(root_path, output_directory):
         f.write(f"Root: {root_path}\n")
     
     process_folder(root_path, 0)
-
 if __name__ == "__main__":
-    source_folder = input("Enter the source folder path: ")
+    root = tk.Tk()
+    root.withdraw()
+    folder_path = fd.askdirectory()
+    if folder_path:
+        source_folder = folder_path
+    else:
+        print("No Folder was selected")
     output_directory = os.path.expanduser(os.path.join("~", "Downloads", "Output"))
-    
+
     if not os.path.exists(source_folder):
         print("Source folder does not exist.")
         input("Press Enter to exit.")
     else:
-        list_files_and_folders(source_folder, output_directory)
+        try:
+            list_files_and_folders(source_folder, output_directory)
+        except PermissionError:
+            print("You don't have permission to write to the specified directory.")
+            print("Restarting the program with administrator privileges...")
+            ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, " ".join(sys.argv), None, 1)
         print(f"Output saved to {output_directory}")
         input("Press Enter to exit.")
