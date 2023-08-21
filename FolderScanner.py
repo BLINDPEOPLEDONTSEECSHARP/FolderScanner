@@ -1,8 +1,9 @@
 import os
-from tkinter import filedialog as fd
 import tkinter as tk
+from tkinter import filedialog as fd
 import sys
 import ctypes
+import subprocess as sb
 
 
 
@@ -55,9 +56,11 @@ if __name__ == "__main__":
     else:
         try:
             list_files_and_folders(source_folder, output_directory)
+            print(f"Output saved to {output_directory}")
+            sb.Popen(fr'explorer /select,{output_directory}')
+            input("Press Enter to exit.")
         except PermissionError:
             print("You don't have permission to write to the specified directory.")
             print("Restarting the program with administrator privileges...")
             ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, " ".join(sys.argv), None, 1)
-        print(f"Output saved to {output_directory}")
-        input("Press Enter to exit.")
+
